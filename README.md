@@ -1,9 +1,16 @@
-# Local LLM — gpt-oss:120b 家庭局域网 AI 服务
+# Local LLM — 家庭局域网 AI 服务
 
 ## 硬件配置
 - GPU: NVIDIA RTX PRO 6000 Blackwell (96GB VRAM)
-- 模型: gpt-oss:120b (65GB, MoE, 接近 OpenAI o4-mini 水平)
 - 本机 IP: 10.0.0.190
+
+## 可用模型
+
+| 模型 | 大小 | 类型 | 特点 |
+|------|------|------|------|
+| `gpt-oss:120b` | 65GB | 本地 | MoE 架构，接近 OpenAI o4-mini 水平 |
+| `qwen3.5:122b` | 81GB | 本地 | 多模态，256k context，agent 工具调用友好 |
+| `qwen3.5:397b-cloud` | — | ☁️ 云端 | 397B MoE，Ollama 云推理，需登录 ollama.com |
 
 ## 首次安装
 
@@ -14,8 +21,15 @@ bash setup.sh
 
 安装内容：
 - **Ollama** — 模型推理引擎
-- **gpt-oss:120b** — 65GB 模型文件
 - **Open WebUI** — 家庭用的网页聊天界面
+
+下载模型：
+```bash
+bash pull-model.sh gpt-oss        # 下载 gpt-oss:120b (65GB)
+bash pull-model.sh qwen3.5        # 下载 qwen3.5:122b (81GB)
+bash pull-model.sh qwen3.5-cloud  # 注册云端模型 (需先 ollama login)
+bash pull-model.sh all            # 下载所有本地模型
+```
 
 ## 日常使用
 
@@ -31,10 +45,18 @@ bash start.sh
 # 停止服务
 bash stop.sh
 
-# 测试 API
+# 测试 API（使用当前活跃模型）
 bash test-api.sh
 bash test-api.sh 10.0.0.190   # 从其他设备视角测试
 ```
+
+## 切换模型
+
+```bash
+bash switch-model.sh
+```
+
+交互式菜单选择模型，选择会保存到 `.current-model`，`test-api.sh` 会自动读取。
 
 ## API 使用方法 (OpenAI 兼容)
 
@@ -48,7 +70,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="gpt-oss:120b",
+    model="qwen3.5:122b",   # 或 gpt-oss:120b
     messages=[{"role": "user", "content": "你好！"}]
 )
 print(response.choices[0].message.content)
@@ -59,7 +81,7 @@ print(response.choices[0].message.content)
 curl http://10.0.0.190:11434/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-oss:120b",
+    "model": "qwen3.5:122b",
     "messages": [{"role": "user", "content": "你好！"}]
   }'
 ```

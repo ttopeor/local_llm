@@ -2,7 +2,16 @@
 # Test the local LLM API
 HOST="${1:-localhost}"
 
+# Read current model from config, fallback to gpt-oss:120b
+CONFIG_FILE="$(dirname "$0")/.current-model"
+if [[ -f "$CONFIG_FILE" ]]; then
+    MODEL=$(cat "$CONFIG_FILE")
+else
+    MODEL="gpt-oss:120b"
+fi
+
 echo "Testing Ollama API at http://${HOST}:11434 ..."
+echo "Active model: $MODEL"
 echo ""
 
 # List available models
@@ -19,11 +28,11 @@ echo ""
 echo "=== Quick Chat Test (OpenAI-compatible) ==="
 curl -s "http://${HOST}:11434/v1/chat/completions" \
   -H "Content-Type: application/json" \
-  -d '{
-    "model": "gpt-oss:120b",
-    "messages": [{"role": "user", "content": "Say hello in one sentence."}],
-    "stream": false
-  }' | python3 -c "
+  -d "{
+    \"model\": \"$MODEL\",
+    \"messages\": [{\"role\": \"user\", \"content\": \"Say hello in one sentence.\"}],
+    \"stream\": false
+  }" | python3 -c "
 import json,sys
 data = json.load(sys.stdin)
 msg = data['choices'][0]['message']['content']
