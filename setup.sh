@@ -48,6 +48,9 @@ echo "[5/5] Setting up Open WebUI as a system service..."
 WEBUI_BIN=$(which open-webui 2>/dev/null || python3 -m site --user-base 2>/dev/null | xargs -I{} echo "{}/bin/open-webui")
 CURRENT_USER=$(whoami)
 
+WEBUI_DATA_DIR="/home/${CURRENT_USER}/.local/share/open-webui"
+mkdir -p "${WEBUI_DATA_DIR}"
+
 sudo tee /etc/systemd/system/local-llm-webui.service > /dev/null <<EOF
 [Unit]
 Description=Open WebUI (Local LLM Chat Interface)
@@ -59,6 +62,8 @@ Type=simple
 User=${CURRENT_USER}
 Environment="OLLAMA_BASE_URL=http://127.0.0.1:11434"
 Environment="WEBUI_AUTH=False"
+Environment="DATA_DIR=${WEBUI_DATA_DIR}"
+WorkingDirectory=${WEBUI_DATA_DIR}
 ExecStart=${WEBUI_BIN} serve
 Restart=on-failure
 RestartSec=5
