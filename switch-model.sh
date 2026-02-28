@@ -5,6 +5,7 @@
 MODELS=(
     "gpt-oss:120b|65GB|GPT-OSS 120B (MoE, 接近 o4-mini, 本地)"
     "qwen3.5:122b|81GB|Qwen3.5 122B (多模态, agent 友好, 本地)"
+    "qwen2.5vl:72b|50GB|Qwen2.5VL 72B (视觉语言模型, 本地)"
     "qwen3.5:397b-cloud|云端|Qwen3.5 397B MoE (云推理, 需登录 ollama.com)"
 )
 
