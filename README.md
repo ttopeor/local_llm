@@ -10,7 +10,9 @@
 |------|------|------|------|
 | `gpt-oss:120b` | 65GB | 本地 | MoE 架构，接近 OpenAI o4-mini 水平 |
 | `qwen3.5:122b` | 81GB | 本地 | 多模态，256k context，agent 工具调用友好 |
-| `qwen2.5vl:72b` | 50GB | 本地 | 视觉语言模型，图像理解 |
+| `qwen2.5vl:72b` | 50GB | 本地 | 视觉语言模型，图像理解，ai_chitchat 大脑 |
+| `qwen2.5vl:32b` | 21GB | 本地 | 视觉语言模型，轻量版 |
+| `qwen2.5vl:7b` | 5GB | 本地 | 视觉语言模型，极速，ai_chitchat 对话 |
 | `qwen3.5:397b-cloud` | — | ☁️ 云端 | 397B MoE，Ollama 云推理，需登录 ollama.com |
 
 ## 首次安装
@@ -29,6 +31,8 @@ bash setup.sh
 bash pull-model.sh gpt-oss        # 下载 gpt-oss:120b (65GB)
 bash pull-model.sh qwen3.5        # 下载 qwen3.5:122b (81GB)
 bash pull-model.sh qwen2.5vl      # 下载 qwen2.5vl:72b (50GB)
+bash pull-model.sh qwen2.5vl-32b  # 下载 qwen2.5vl:32b (21GB)
+bash pull-model.sh qwen2.5vl-7b   # 下载 qwen2.5vl:7b (5GB)
 bash pull-model.sh qwen3.5-cloud  # 注册云端模型 (需先 ollama login)
 bash pull-model.sh all            # 下载所有本地模型
 ```
